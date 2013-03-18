@@ -3,7 +3,7 @@ jquery.intro.js
 
 looks like [this](http://usablica.github.com/intro.js/).
 
-jQuery fork of [usablica/intro.js](https://github.com/usablica/intro.js) with a slightly different API. call it like this:
+jQuery fork of [usablica/intro.js](https://github.com/usablica/intro.js) with a slightly different API. also relies on the bootstrap popover plugin. call it like this:
 
 ```javascript
 $.intro([
