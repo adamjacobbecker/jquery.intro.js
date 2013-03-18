@@ -77,7 +77,7 @@
         _this.$helperLayerDiv.popover({
           content: text,
           trigger: 'manual',
-          template: "<div class=\"popover\">\n  <div class=\"arrow\"></div>\n  <div class=\"popover-inner\">\n    <div class=\"popover-content\">\n      <p></p>\n    </div>\n    <div class=\"introjs-tooltipbuttons\">\n      <a class=\"introjs-skipbutton\">Skip</a>\n      <a class=\"introjs-nextbutton\">Next →</a>\n    </div>\n  </div>\n</div>",
+          template: "<div class=\"popover\">\n  <div class=\"arrow\"></div>\n  <div class=\"popover-inner\">\n    <div class=\"popover-content\">\n      <p></p>\n    </div>\n    <div class=\"introjs-tooltipbuttons\">\n      <a class=\"introjs-skipbutton\">Skip</a>\n      <a class=\"introjs-nextbutton\">" + (_this.steps[_this.currentStep + 1] != null ? 'Next →' : 'Done!') + "</a>\n    </div>\n  </div>\n</div>",
           placement: placement
         });
         return _this.$helperLayerDiv.popover('show');
