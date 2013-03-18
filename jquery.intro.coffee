@@ -9,8 +9,10 @@ class jQueryIntroJs
     @addOverlay()
     @addHelperLayer()
     @showCurrentStep()
-    $(document).on "keydown.introjs", (e) =>
-      @keydown(e)
+
+    $(document).on "keydown.introjs", ((e) => @keydown(e))
+    $(document).on "click.introjs", ".introjs-nextbutton", (=> @nextStep())
+    $(document).on "click.introjs", ".introjs-skipbutton", (=> @endTour())
 
   keydown: (e) ->
     switch e.keyCode
@@ -34,25 +36,14 @@ class jQueryIntroJs
     @$helperLayerDiv = $("""
       <div class="introjs-helperLayer">
         <span class="introjs-helperNumberLayer"></span>
-        <div class="introjs-tooltip">
-          <div class="introjs-tooltiptext"></div>
-          <div class="introjs-tooltipbuttons">
-            <a class="introjs-skipbutton">Skip</a>
-            <a class="introjs-nextbutton">Next →</a>
-          </div>
-        </div>
       </div>
     """)
 
-    @$helperLayerDiv.on "click", ".introjs-nextbutton", =>
-      @nextStep()
-
-    @$helperLayerDiv.on "click", ".introjs-skipbutton", =>
-      @endTour()
-
     @$helperLayerDiv.appendTo("body")
 
-  setHelperLayer: ($el, text) ->
+  setHelperLayer: ($el, text, placement = 'bottom', minWidth = false) ->
+    @$helperLayerDiv.popover('destroy')
+
     @$helperLayerDiv.css
       width: $el.outerWidth() + 10
       height: $el.outerHeight() + 10
@@ -60,16 +51,30 @@ class jQueryIntroJs
       left: $el.offset().left - 5
 
     @$helperLayerDiv.find(".introjs-helperNumberLayer").text(@currentStep + 1)
-    @$helperLayerDiv.find(".introjs-tooltiptext").text(text)
-    @$helperLayerDiv.find(".introjs-tooltip").css({opacity: 0})
 
-    $tooltipClone = @$helperLayerDiv.find(".introjs-tooltip").clone().appendTo("body").css({"transition": "none"}).css({"width":$el.outerWidth() + 10})
-    height = $tooltipClone.outerHeight()
-    $tooltipClone.remove()
+    setTimeout =>
+      @$helperLayerDiv.popover
+        content: text
+        trigger: 'manual'
+        template: """
+          <div class="popover">
+            <div class="arrow"></div>
+            <div class="popover-inner">
+              <div class="popover-content">
+                <p></p>
+              </div>
+              <div class="introjs-tooltipbuttons">
+                <a class="introjs-skipbutton">Skip</a>
+                <a class="introjs-nextbutton">Next →</a>
+              </div>
+            </div>
+          </div>
+        """
+        placement: placement
 
-    @$helperLayerDiv.find(".introjs-tooltip").css
-      opacity: 1
-      bottom: -(height + 10)
+      @$helperLayerDiv.popover('show')
+
+    , 300
 
   showCurrentStep: ->
     step = @steps[@currentStep]
@@ -83,7 +88,7 @@ class jQueryIntroJs
       @steps.splice(@currentStep, 1)
       return @showCurrentStep()
 
-    @setHelperLayer($el, step['text'])
+    @setHelperLayer($el, step['text'], step['placement'], step['minWidth'])
     setTimeout =>
       $el.addClass('introjs-showElement')
     , 200
@@ -105,6 +110,7 @@ class jQueryIntroJs
 
   endTour: ->
     $(".introjs-showElement").removeClass("introjs-showElement")
+    @$helperLayerDiv.popover('destroy')
     @$helperLayerDiv.remove()
 
     @$overlayDiv.fadeOut 100, ->
