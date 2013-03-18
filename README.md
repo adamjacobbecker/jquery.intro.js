@@ -20,7 +20,8 @@ $.intro([
         return $(".something-else");
       }
     },
-    text: "That was rad!"
+    text: "That was rad!",
+    position: "top" // or 'left' or 'right'. defaults to 'bottom'
   },
   {
     el: "a:eq(0):contains('delete')",
