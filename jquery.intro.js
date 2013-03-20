@@ -95,7 +95,7 @@
       }
       if ($el.length === 0) {
         this.steps.splice(this.currentStep, 1);
-        return this.showCurrentStep();
+        return (this.steps.length === this.currentStep ? this.endTour() : this.showCurrentStep());
       }
       this.setHelperLayer($el, step['text'], step['placement'], step['minWidth']);
       setTimeout(function() {
