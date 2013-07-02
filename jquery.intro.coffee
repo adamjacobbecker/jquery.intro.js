@@ -44,11 +44,23 @@ class jQueryIntroJs
   setHelperLayer: ($el, text, placement = 'bottom', minWidth = false) ->
     @$helperLayerDiv.popover('destroy')
 
-    @$helperLayerDiv.css
-      width: $el.outerWidth() + 10
-      height: $el.outerHeight() + 10
-      top: $el.offset().top - 5
-      left: $el.offset().left - 5
+    if $el
+      @$helperLayerDiv.css
+        width: $el.outerWidth() + 10
+        height: $el.outerHeight() + 10
+        top: $el.offset().top - 5
+        left: $el.offset().left - 5
+        opacity: '1'
+        'margin-left': ''
+
+    else
+      @$helperLayerDiv.css
+        width: '300px'
+        height: '0px'
+        top: '50px'
+        left: '50%'
+        'margin-left': '-150px'
+        opacity: '0'
 
     @$helperLayerDiv.find(".introjs-helperNumberLayer").text(@currentStep + 1)
 
@@ -58,7 +70,7 @@ class jQueryIntroJs
         trigger: 'manual'
         template: """
           <div class="popover">
-            <div class="arrow"></div>
+            #{if placement != 'none' then "<div class='arrow'></div>" else ""}
             <div class="popover-inner">
               <div class="popover-content">
                 <p></p>
@@ -70,27 +82,27 @@ class jQueryIntroJs
             </div>
           </div>
         """
-        placement: placement
+        placement: if placement == 'none' then 'bottom' else placement
 
       @$helperLayerDiv.popover('show')
 
-    , 300
+    , 325
 
   showCurrentStep: ->
     step = @steps[@currentStep]
 
     if typeof step['el'] == 'function'
       $el = step['el']().slice(0, 1)
-    else
+    else if step['el'] != 'full'
       $el = $(step['el']).slice(0, 1)
 
-    if $el.length == 0
+    if step['el'] != 'full' && $el.length == 0
       @steps.splice(@currentStep, 1)
       return (if @steps.length == @currentStep then @endTour() else @showCurrentStep())
 
     @setHelperLayer($el, step['text'], step['placement'], step['minWidth'])
     setTimeout =>
-      $el.addClass('introjs-showElement')
+      $el?.addClass('introjs-showElement')
     , 200
 
     if !@steps[@currentStep + 1]?
