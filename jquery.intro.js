@@ -100,7 +100,7 @@
       var $el, step,
         _this = this;
       step = this.steps[this.currentStep];
-      if (step.onShow && typeof step.onShow === 'function') {
+      if (typeof step.onShow === "function") {
         step.onShow(step, this);
       }
       if (typeof step['el'] === 'function') {
