@@ -1,7 +1,9 @@
 jquery.intro.js
 ===============
 
-looks like this: http://cl.ly/image/3O2l0y150e0e
+looks like this: 
+
+![screenshot](http://cl.ly/image/2k1O3t1V2G3q/Screen%20Shot%202013-09-04%20at%2011.11.05%20AM.png)
 
 jQuery fork of [usablica/intro.js](https://github.com/usablica/intro.js) with a slightly different API. also relies on the bootstrap popover plugin. call it like this:
 
