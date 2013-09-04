@@ -90,7 +90,7 @@ class jQueryIntroJs
 
   showCurrentStep: ->
     step = @steps[@currentStep]
-
+    step.onShow?(step,@)
     if typeof step['el'] == 'function'
       $el = step['el']().slice(0, 1)
     else if step['el'] != 'full'
